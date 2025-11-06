@@ -40,12 +40,12 @@ app.get('/test-error', () => {
   throw new Error('Simulated server error');
 });
 
-// --- 404 Middleware ---
+// --- 404 ---
 app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
 
-// --- 500 Middleware ---
+// --- 500 ---
 app.use((err, req, res, next) => {
   console.error(err.message);
   res.status(500).json({ message: err.message });
