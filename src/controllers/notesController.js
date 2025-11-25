@@ -6,13 +6,9 @@ export const getAllNotes = async (req, res) => {
   res.status(200).json(notes);
 };
 
-export const getNotesById = async (req, res, next) => {
+export const getNoteById = async (req, res, next) => {
   const { noteId } = req.params;
   const note = await Note.findById(noteId);
-
-  if (!note) {
-    return res.status(404).json({ message: 'Note not found' });
-  }
 
   // Додаємо базову обробку помилки замість res.status(404)
   if (!note) {
@@ -45,15 +41,14 @@ export const deleteNote = async (req, res, next) => {
 export const updateNote = async (req, res, next) => {
   const { noteId } = req.params;
 
-  const student = await Note.findOneAndUpdate(
+  const note = await Note.findOneAndUpdate(
     { _id: noteId },
     req.body,
-    { new: true },
+    { new: true }
   );
 
   if (!note) {
-    next(createHttpError(404, 'Note not found'));
-    return;
+    return next(createHttpError(404, 'Note not found'));
   }
 
   res.status(200).json(note);
