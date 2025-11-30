@@ -4,6 +4,9 @@ import helmet from 'helmet';
 import 'dotenv/config';
 
 import { connectMongoDB } from './db/connectMongoDB.js';
+
+import { errors } from "celebrate";
+
 import { logger } from './middleware/logger.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { errorHandler } from './middleware/errorHandler.js';
@@ -33,10 +36,10 @@ app.use((req, res, next) => {
 
 // --- Routes ---
 app.use(notesRoutes);
-
 // --- 404 ---
 app.use(notFoundHandler);
-
+// обробка помилок від celebrate (валідація)
+app.use(errors());
 // --- 500 ---
 app.use(errorHandler);
 
