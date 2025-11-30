@@ -1,7 +1,14 @@
-// src/validations/studentsValidation.js
+// src/validations/notesValidation.js
 import { Joi, Segments } from "celebrate";
 import { isValidObjectId } from 'mongoose';
 import { TAGS } from '../constants/tags.js';
+
+const objectIdValidator = (value, helpers) => {
+  if(!isValidObjectId(value)){
+    return helpers.message('Invalid id format');
+  }
+  return value;
+};
 
 export const noteIdSchema = {
   [Segments.PARAMS]: Joi.object({
@@ -37,9 +44,4 @@ export const updateNoteSchema = {
   }).min(1),
 };
 
-const objectIdValidator = (value, helpers) => {
-  if(!isValidObjectId(value)){
-    return helpers.message('Invalid id format');
-  }
-  return value;
-};
+
