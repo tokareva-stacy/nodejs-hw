@@ -8,7 +8,7 @@ export const connectMongoDB = async () => {
     console.log("✅ MongoDB connection established successfully");
 
     // Гарантуємо, що індекси в БД відповідають схемі
-    await Student.syncIndexes();
+    await Note.syncIndexes();
     console.log("Indexes synced successfully");
   } catch (error) {
     console.error("❌ Failed to connect to MongoDB:", error.message);
