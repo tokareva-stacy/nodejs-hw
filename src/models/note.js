@@ -33,6 +33,4 @@ noteSchema.index(
   },
 );
 
-noteSchema.index({ name: "text" });
-
 export const Note = model('Note', noteSchema);
