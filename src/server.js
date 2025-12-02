@@ -2,18 +2,19 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import 'dotenv/config';
+import cookieParser from "cookie-parser";
 
 import { connectMongoDB } from './db/connectMongoDB.js';
 
 import { errors } from "celebrate";
-
 import { logger } from './middleware/logger.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
 import notesRoutes from './routes/notesRoutes.js';
-
 import { Note } from './models/note.js';
+import authRoutes from './routes/authRoutes.js';
+import studentsRoutes from './routes/notesRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;
@@ -28,11 +29,15 @@ app.use(
 );
 app.use(helmet());
 app.use(cors());
+app.use(cookieParser());
 
 app.use((req, res, next) => {
   console.log(`Time: ${new Date().toLocaleString()}`);
   next();
 });
+
+app.use(authRoutes);
+app.use(notesRoutes);
 
 // --- Routes ---
 app.use(notesRoutes);
