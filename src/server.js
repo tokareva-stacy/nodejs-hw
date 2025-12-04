@@ -12,9 +12,7 @@ import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
 import notesRoutes from './routes/notesRoutes.js';
-import { Note } from './models/note.js';
 import authRoutes from './routes/authRoutes.js';
-import studentsRoutes from './routes/notesRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;
@@ -36,11 +34,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(authRoutes);
-app.use(notesRoutes);
-
 // --- Routes ---
 app.use(notesRoutes);
+app.use(authRoutes);
 // --- 404 ---
 app.use(notFoundHandler);
 // обробка помилок від celebrate (валідація)
