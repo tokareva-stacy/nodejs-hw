@@ -147,7 +147,7 @@ export const resetPassword = async (req, res, next) => {
   } catch {
     return next(createHttpError(401, 'Invalid or expired token'));
   }
-
+  // console.log(token);
   const user = await User.findOne({ _id: payload.sub, email: payload.email });
 
   if (!user) {
@@ -155,7 +155,7 @@ export const resetPassword = async (req, res, next) => {
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
-  
+
   await User.updateOne({ _id: user._id }, { password: hashedPassword });
   await Session.deleteMany({ userId: user._id });
   res.status(200).json({ message: 'Password reset successfully' });
