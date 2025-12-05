@@ -8,7 +8,8 @@ import fs from 'node:fs/promises';
 import { User } from '../models/user.js';
 import { Session } from "../models/session.js";
 import { createSession, setSessionCookies } from '../services/auth.js';
-import { sendEmail } from '../utils/sendEmail.js';
+import { sendEmail } from '../utils/sendMail.js';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 
 export const registerUser = async (req, res, next) => {
   const { email, password } = req.body;
@@ -182,4 +183,22 @@ export const resetPassword = async (req, res, next) => {
   res.status(200).json({
     message: 'Password reset successfully. Please log in again.',
   });
+};
+
+// аватар
+export const updateUserAvatar = async (req, res, next) => {
+  if (!req.file) {
+    next(createHttpError(400, 'No file'));
+    return;
+  }
+
+  const result = await saveFileToCloudinary(req.file.buffer);
+
+  const user = await User.findByIdAndUpdate(
+    req.user._id,
+    { avatar: result.secure_url },
+    { new: true },
+  );
+
+  res.status(200).json({ url: user.avatar });
 };
